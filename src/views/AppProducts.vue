@@ -11,12 +11,16 @@ const pageTitle = computed(() => {
   return isRequestRunning.value ? 'Data loading in progress ...' : 'Products';
 });
 
-onMounted(() => {
+onMounted(async () => {
   isRequestRunning.value = true;
-  setTimeout(() => {
-    products.push(...getProducts());
+  try {
+    const response = await getProducts();
+    products.push(...response);
+  } catch (error) {
+    console.log('Error! Data loading error', error);
+  } finally {
     isRequestRunning.value = false;
-  }, 2500);
+  }
 });
 </script>
 
