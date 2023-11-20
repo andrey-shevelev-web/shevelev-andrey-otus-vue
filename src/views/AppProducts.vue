@@ -1,10 +1,10 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import AppProduct from '@/components/AppProduct.vue';
 import AppSpinner from '@/components/AppSpinner.vue';
 import { getProducts } from '@/services/ProductService';
 
-const products = ref([]);
+const products = reactive([]);
 const isRequestRunning = ref(false);
 
 const pageTitle = computed(() => {
@@ -14,7 +14,7 @@ const pageTitle = computed(() => {
 onMounted(() => {
   isRequestRunning.value = true;
   setTimeout(() => {
-    products.value = getProducts();
+    products.push(...getProducts());
     isRequestRunning.value = false;
   }, 2500);
 });
@@ -38,12 +38,7 @@ onMounted(() => {
         v-else
         v-for="product in products"
         v-key="product.id"
-        :title="product.title"
-        :price="product.price"
-        :category="product.category"
-        :description="product.description"
-        :image="product.image"
-        :rating="product.rating"
+        :product="product"
       />
     </div>
   </div>
