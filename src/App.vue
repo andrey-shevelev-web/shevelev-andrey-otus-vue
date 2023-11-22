@@ -1,9 +1,9 @@
 <script setup>
-import AppProducts from '@/views/AppProducts.vue';
+import ViewMain from '@/views/ViewMain.vue';
 </script>
 
 <template>
-  <AppProducts />
+  <ViewMain />
 </template>
 
 <style scoped></style>

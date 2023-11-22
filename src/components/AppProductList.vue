@@ -1,14 +1,26 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, defineProps, watch } from 'vue';
 import AppProduct from '@/components/AppProduct.vue';
 import AppSpinner from '@/components/AppSpinner.vue';
 import { getProducts } from '@/services/ProductService';
+
+const props = defineProps(['search']);
 
 const products = reactive([]);
 const isRequestRunning = ref(false);
 
 const pageTitle = computed(() => {
   return isRequestRunning.value ? 'Data loading in progress ...' : 'Products';
+});
+
+const filteredProducts = computed(() => {
+  if (props.search) {
+    return products.filter(
+      o => o.title.includes(props.search) || o.price == props.search
+    );
+  } else {
+    return products;
+  }
 });
 
 onMounted(async () => {
@@ -40,7 +52,7 @@ onMounted(async () => {
       <AppSpinner v-if="isRequestRunning" />
       <AppProduct
         v-else
-        v-for="product in products"
+        v-for="product in filteredProducts"
         v-key="product.id"
         :product="product"
       />
