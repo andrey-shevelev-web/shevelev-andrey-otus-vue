@@ -1,13 +1,29 @@
 <script setup>
-import { ref, reactive, computed, onMounted, defineProps, watch } from 'vue';
+import {
+  ref,
+  reactive,
+  computed,
+  onMounted,
+  defineProps,
+  defineEmits
+} from 'vue';
 import AppProduct from '@/components/AppProduct.vue';
+import AppAddProduct from '@/components/AppAddProduct.vue';
 import AppSpinner from '@/components/AppSpinner.vue';
 import { getProducts } from '@/services/ProductService';
 
-const props = defineProps(['search']);
+const props = defineProps(['search', 'hiddenAddProductForm']);
+const emit = defineEmits();
 
 const products = reactive([]);
 const isRequestRunning = ref(false);
+
+const onAddProduct = event => {
+  if (event) {
+    products.unshift(event);
+  }
+  emit('setHiddenAddProductForm', true);
+};
 
 const pageTitle = computed(() => {
   return isRequestRunning.value ? 'Data loading in progress ...' : 'Products';
@@ -37,6 +53,10 @@ onMounted(async () => {
 </script>
 
 <template>
+  <AppAddProduct
+    v-if="!props.hiddenAddProductForm"
+    @add-product="onAddProduct"
+  />
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="text-900 font-bold text-6xl mb-4 text-center">
       {{ pageTitle }}

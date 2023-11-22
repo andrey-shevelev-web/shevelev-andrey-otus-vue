@@ -5,18 +5,31 @@ import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
 
 const mainSearch = ref('');
+const mainHiddenAddProductForm = ref(true);
+
 const onSetSearchValue = value => {
   mainSearch.value = value;
+};
+
+const onSetHiddenAddProductForm = event => {
+  mainHiddenAddProductForm.value = event;
 };
 </script>
 
 <template>
   <header>
-    <AppHeader @setSearchValue="onSetSearchValue" />
+    <AppHeader
+      @setSearchValue="onSetSearchValue"
+      @setHiddenAddProductForm="onSetHiddenAddProductForm"
+    />
   </header>
 
   <main>
-    <AppProductList :search="mainSearch" />
+    <AppProductList
+      :search="mainSearch"
+      :hiddenAddProductForm="mainHiddenAddProductForm"
+      @setHiddenAddProductForm="onSetHiddenAddProductForm"
+    />
   </main>
 
   <footer>
