@@ -1,5 +1,6 @@
 <script setup>
 import { ref, defineEmits } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import AppSpinner from '@/components/AppSpinner.vue';
@@ -13,6 +14,7 @@ const price = ref('');
 
 const onAddProduct = () => {
   emit('add-product', {
+    id: uuidv4(),
     title: title.value,
     category: category.value,
     description: description.value,

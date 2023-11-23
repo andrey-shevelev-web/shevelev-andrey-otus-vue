@@ -73,7 +73,7 @@ onMounted(async () => {
       <AppProduct
         v-else
         v-for="product in filteredProducts"
-        v-key="product.id"
+        :key="product.id"
         :product="product"
       />
     </div>

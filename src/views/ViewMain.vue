@@ -12,7 +12,7 @@ const onSetSearchValue = value => {
 };
 
 const onSetHiddenAddProductForm = event => {
-  mainHiddenAddProductForm.value = event;
+  mainHiddenAddProductForm.value = !!event;
 };
 </script>
 
