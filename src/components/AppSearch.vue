@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
 import InputText from 'primevue/inputtext';
 
 const props = defineProps(['modelValue']);

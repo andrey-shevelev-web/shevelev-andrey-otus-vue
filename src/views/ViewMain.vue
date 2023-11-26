@@ -6,6 +6,7 @@ import AppHeader from '@/components/AppHeader.vue';
 
 const mainSearch = ref('');
 const mainHiddenAddProductForm = ref(true);
+const mainHiddenOrderForm = ref(true);
 
 const onSetSearchValue = value => {
   mainSearch.value = value;
@@ -14,6 +15,10 @@ const onSetSearchValue = value => {
 const onSetHiddenAddProductForm = event => {
   mainHiddenAddProductForm.value = !!event;
 };
+
+const onSetHiddenOrderForm = event => {
+  mainHiddenOrderForm.value = !!event;
+};
 </script>
 
 <template>
@@ -21,6 +26,7 @@ const onSetHiddenAddProductForm = event => {
     <AppHeader
       @setSearchValue="onSetSearchValue"
       @setHiddenAddProductForm="onSetHiddenAddProductForm"
+      @setHiddenOrderForm="onSetHiddenOrderForm"
     />
   </header>
 
@@ -28,7 +34,9 @@ const onSetHiddenAddProductForm = event => {
     <AppProductList
       :search="mainSearch"
       :hiddenAddProductForm="mainHiddenAddProductForm"
+      :hiddenOrderForm="mainHiddenOrderForm"
       @setHiddenAddProductForm="onSetHiddenAddProductForm"
+      @setHiddenOrderForm="onSetHiddenOrderForm"
     />
   </main>
 

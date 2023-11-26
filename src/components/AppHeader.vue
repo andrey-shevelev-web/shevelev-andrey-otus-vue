@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineEmits } from 'vue';
+import { ref, watch } from 'vue';
 import Button from 'primevue/button';
 import AppSearch from '@/components/AppSearch.vue';
 
@@ -22,8 +22,14 @@ watch(search, (newSearchValue, oldSearchValue) => {
         <Button
           label="Add product"
           icon="pi pi-plus"
-          class="w-5 mr-4"
+          class="mr-4"
           @click="$emit('setHiddenAddProductForm', false)"
+        ></Button>
+        <Button
+          label="Send order"
+          icon="pi pi-file-export"
+          class="mr-4"
+          @click="$emit('setHiddenOrderForm', false)"
         ></Button>
         <AppSearch v-model="search" />
       </div>
