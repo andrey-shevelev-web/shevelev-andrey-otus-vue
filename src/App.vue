@@ -1,9 +1,12 @@
 <script setup>
-import ViewMain from '@/views/ViewMain.vue';
+import { RouterView } from 'vue-router';
+import AppLayout from '@/layouts/AppLayout.vue';
 </script>
 
 <template>
-  <ViewMain />
+  <AppLayout>
+    <RouterView />
+  </AppLayout>
 </template>
 
-<style scoped></style>
+<style></style>
