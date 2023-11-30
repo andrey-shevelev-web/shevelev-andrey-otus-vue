@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Spinner from '@/components/Spinner.vue';
 
@@ -75,12 +76,14 @@ const onHideAddProductForm = () => {
         <label for="price1" class="block text-900 font-medium mb-2"
           >Price</label
         >
-        <InputText
+        <InputNumber
           id="price1"
-          type="text"
           class="w-full mb-4"
           v-model="price"
           placeholder="Input Price"
+          mode="currency"
+          currency="USD"
+          locale="en-US"
         />
         <Spinner v-if="false" />
         <div
