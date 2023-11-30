@@ -49,8 +49,12 @@ const pageTitle = computed(() => {
 
 const filteredProducts = computed(() => {
   if (props.search) {
+    const priceSearch = Number(props.search);
+
     return products.filter(
-      o => o.title.includes(props.search) || o.price == props.search
+      o =>
+        o.title.includes(props.search) ||
+        (!isNaN(priceSearch) && o.price === priceSearch)
     );
   } else {
     return products;
