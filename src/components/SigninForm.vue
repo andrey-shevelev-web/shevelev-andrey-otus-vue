@@ -11,7 +11,7 @@ const validation = fieldName => value => {
   if (!value) return `${fieldName} required`;
   return /^[a-zA-Z0-9_@#%&\!\$\^\*\(\)\-]+$/.test(value)
     ? true
-    : `${fieldName} contains invalid characters`;
+    : `${fieldName} allowed only: Latin letters, numbers, some symbols`;
 };
 
 const {
