@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useForm } from 'vee-validate';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import AppSpinner from '@/components/AppSpinner.vue';
+import Spinner from '@/components/Spinner.vue';
 import { authSignin, isUserAuthenticated } from '@/services/AuthService';
 
 const validation = fieldName => value => {
@@ -49,7 +49,7 @@ const signin = handleSubmit(async values => {
   >
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-4">
       <div class="text-center mb-5">
-        <div class="text-900 text-3xl font-medium mb-3">SHOP DEMO</div>
+        <div class="text-900 text-3xl font-medium mb-3">DEMO SHOP</div>
         <span class="text-600 font-medium line-height-3"
           >Login to your personal account</span
         >
@@ -92,10 +92,10 @@ const signin = handleSubmit(async values => {
           </small>
         </div>
 
-        <AppSpinner v-if="isRequestRunning" />
+        <Spinner v-if="isRequestRunning" />
         <Button
           v-if="!isRequestRunning"
-          label="Войти"
+          label="Sign in"
           icon="pi pi-user"
           class="w-full"
           type="submit"

@@ -1,9 +1,9 @@
-import { AppLayoutToFileMap } from '@/layouts/layouts.types';
+import { LayoutToFileMap } from '@/layouts/layouts.types';
 
 export async function loadLayoutMiddleware(route) {
   const { layout } = route.meta,
     normalizedLayoutName = layout || 'default',
-    fileName = AppLayoutToFileMap[normalizedLayoutName],
+    fileName = LayoutToFileMap[normalizedLayoutName],
     fileNameWithoutExtension = fileName.split('.vue')[0];
 
   const component = await import(

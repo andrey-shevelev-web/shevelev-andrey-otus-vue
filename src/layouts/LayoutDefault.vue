@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import AppProductList from '@/components/AppProductList.vue';
-import AppFooter from '@/components/AppFooter.vue';
-import AppHeader from '@/components/AppHeader.vue';
+import ProductList from '@/components/ProductList.vue';
+import MainHeader from '@/components/MainHeader.vue';
+import MainFooter from '@/components/MainFooter.vue';
 
 const mainSearch = ref('');
 const mainHiddenAddProductForm = ref(true);
@@ -23,7 +23,7 @@ const onSetHiddenOrderForm = event => {
 
 <template>
   <header>
-    <AppHeader
+    <MainHeader
       @setSearchValue="onSetSearchValue"
       @setHiddenAddProductForm="onSetHiddenAddProductForm"
       @setHiddenOrderForm="onSetHiddenOrderForm"
@@ -31,7 +31,7 @@ const onSetHiddenOrderForm = event => {
   </header>
 
   <main>
-    <AppProductList
+    <ProductList
       :search="mainSearch"
       :hiddenAddProductForm="mainHiddenAddProductForm"
       :hiddenOrderForm="mainHiddenOrderForm"
@@ -41,6 +41,6 @@ const onSetHiddenOrderForm = event => {
   </main>
 
   <footer>
-    <AppFooter />
+    <MainFooter />
   </footer>
 </template>

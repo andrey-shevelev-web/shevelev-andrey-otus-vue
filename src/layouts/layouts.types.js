@@ -1,4 +1,4 @@
-export const AppLayoutToFileMap = {
-  default: 'AppLayoutDefault.vue',
-  signin: 'AppLayoutSignin.vue'
+export const LayoutToFileMap = {
+  default: 'LayoutDefault.vue',
+  signin: 'LayoutSignin.vue'
 };

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import AppSpinner from '@/components/AppSpinner.vue';
+import Spinner from '@/components/Spinner.vue';
 
 const emit = defineEmits();
 
@@ -82,7 +82,7 @@ const onHideAddProductForm = () => {
           v-model="price"
           placeholder="Input Price"
         />
-        <AppSpinner v-if="false" />
+        <Spinner v-if="false" />
         <div
           class="flex flex-wrap justify-content-between align-content-center"
         >

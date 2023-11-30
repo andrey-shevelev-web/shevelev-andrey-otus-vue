@@ -1,9 +1,9 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
-import AppProduct from '@/components/AppProduct.vue';
-import AppAddProduct from '@/components/AppAddProduct.vue';
-import AppOrder from '@/components/AppOrder.vue';
-import AppSpinner from '@/components/AppSpinner.vue';
+import Product from '@/components/Product.vue';
+import ProductForm from '@/components/ProductForm.vue';
+import OrderForm from '@/components/OrderForm.vue';
+import Spinner from '@/components/Spinner.vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { getProducts } from '@/services/ProductService';
@@ -71,15 +71,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <AppOrder
+  <OrderForm
     v-if="!props.hiddenOrderForm"
     @setHiddenOrderForm="onSetHiddenOrderForm"
     @orderFormSubmitted="onOrderFormSubmitted"
   />
-  <AppAddProduct
-    v-if="!props.hiddenAddProductForm"
-    @add-product="onAddProduct"
-  />
+  <ProductForm v-if="!props.hiddenAddProductForm" @add-product="onAddProduct" />
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="text-900 font-bold text-6xl mb-4 text-center">
       {{ pageTitle }}
@@ -92,9 +89,9 @@ onMounted(async () => {
     </div>
 
     <div class="grid">
-      <AppSpinner v-if="isRequestRunning" />
+      <Spinner v-if="isRequestRunning" />
       <template v-else>
-        <AppProduct
+        <Product
           v-for="product in filteredProducts"
           :key="product.id"
           :product="product"

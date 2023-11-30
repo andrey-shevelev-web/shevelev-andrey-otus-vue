@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import Button from 'primevue/button';
-import AppSearch from '@/components/AppSearch.vue';
+import Search from '@/components/Search.vue';
 
 const emit = defineEmits();
 const search = ref('');
@@ -15,7 +15,7 @@ watch(search, (newSearchValue, oldSearchValue) => {
   <div class="mb-2 p-2 bg-primary text-white">
     <div class="flex align-items-center justify-content-between flex-wrap px-3">
       <div class="flex align-items-center">
-        <div class="text-2xl font-medium text-white">OTUS VUE.JS</div>
+        <div class="text-2xl font-medium text-white">DEMO SHOP</div>
       </div>
 
       <div class="flex align-items-center">
@@ -31,7 +31,7 @@ watch(search, (newSearchValue, oldSearchValue) => {
           class="mr-4"
           @click="$emit('setHiddenOrderForm', false)"
         ></Button>
-        <AppSearch v-model="search" />
+        <Search v-model="search" />
       </div>
     </div>
   </div>

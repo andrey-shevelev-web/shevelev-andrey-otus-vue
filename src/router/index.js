@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { loadLayoutMiddleware } from '@/router/middleware/loadLayout.middleware';
-import AppProductList from '@/components/AppProductList.vue';
-import AppSignin from '@/components/AppSignin.vue';
+import ProductList from '@/components/ProductList.vue';
+import SigninForm from '@/components/SigninForm.vue';
 import { isUserAuthenticated } from '@/services/AuthService';
 
 const routes = [
@@ -15,13 +15,13 @@ const routes = [
   {
     path: '/products',
     name: 'ProductList',
-    component: AppProductList,
+    component: ProductList,
     meta: { requiredAuth: true }
   },
   {
     path: '/signin',
     name: 'Signin',
-    component: AppSignin,
+    component: SigninForm,
     meta: {
       layout: 'signin'
     }
