@@ -6,6 +6,7 @@ import OrderForm from '@/components/OrderForm.vue';
 import Spinner from '@/components/Spinner.vue';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { v4 as uuidv4 } from 'uuid';
 import { getProducts } from '@/services/ProductService';
 
 const props = defineProps([
@@ -18,6 +19,7 @@ const emit = defineEmits();
 const toast = useToast();
 
 const products = reactive([]);
+const cartItems = reactive([]);
 const isRequestRunning = ref(false);
 
 const onAddProduct = event => {
@@ -61,8 +63,37 @@ const filteredProducts = computed(() => {
   }
 });
 
+const onAddToCart = productId => {
+  const foundProduct = products.find(o => o.id == productId);
+  if (!foundProduct) return;
+
+  const newCartItem = {
+    id: uuidv4(),
+    productId,
+    image: foundProduct.image,
+    title: foundProduct.title,
+    price: foundProduct.price,
+    quantity: 1
+  };
+
+  const foundCartItem = cartItems.find(o => o.productId == productId);
+  if (foundCartItem) {
+    foundCartItem.quantity += 1;
+  } else {
+    cartItems.push(newCartItem);
+  }
+
+  localStorage.setItem('cart', JSON.stringify(cartItems));
+};
+
 onMounted(async () => {
   isRequestRunning.value = true;
+
+  const cartFromLS = JSON.parse(localStorage.getItem('cart'));
+  if (cartFromLS) {
+    cartItems.push(...cartFromLS);
+  }
+
   try {
     const response = await getProducts();
     products.push(...response);
@@ -99,6 +130,7 @@ onMounted(async () => {
           v-for="product in filteredProducts"
           :key="product.id"
           :product="product"
+          @addToCart="onAddToCart"
         />
       </template>
     </div>

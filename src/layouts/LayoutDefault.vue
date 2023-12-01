@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import ProductList from '@/components/ProductList.vue';
 import MainHeader from '@/components/MainHeader.vue';
 import MainFooter from '@/components/MainFooter.vue';
 
@@ -31,13 +30,7 @@ const onSetHiddenOrderForm = event => {
   </header>
 
   <main>
-    <ProductList
-      :search="mainSearch"
-      :hiddenAddProductForm="mainHiddenAddProductForm"
-      :hiddenOrderForm="mainHiddenOrderForm"
-      @setHiddenAddProductForm="onSetHiddenAddProductForm"
-      @setHiddenOrderForm="onSetHiddenOrderForm"
-    />
+    <slot />
   </main>
 
   <footer>

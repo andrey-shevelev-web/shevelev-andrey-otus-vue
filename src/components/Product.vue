@@ -37,7 +37,11 @@ defineProps({
             Rate: {{ product.rating.rate }} / count: {{ product.rating.count }}
           </span>
         </div>
-        <Button label="Buy Now" class="p-3 w-full"></Button>
+        <Button
+          label="Add to Cart"
+          @click="$emit('addToCart', product.id)"
+          class="p-3 w-full"
+        ></Button>
       </div>
     </div>
   </div>
