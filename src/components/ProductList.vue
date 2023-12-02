@@ -1,19 +1,16 @@
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, provide, inject } from 'vue';
 import Product from '@/components/Product.vue';
 import ProductForm from '@/components/ProductForm.vue';
-import OrderForm from '@/components/OrderForm.vue';
 import Spinner from '@/components/Spinner.vue';
+import Toolbar from 'primevue/toolbar';
+import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { v4 as uuidv4 } from 'uuid';
 import { getProducts } from '@/services/ProductService';
 
-const props = defineProps([
-  'search',
-  'hiddenAddProductForm',
-  'hiddenOrderForm'
-]);
+const search = inject('search');
 const emit = defineEmits();
 
 const toast = useToast();
@@ -21,13 +18,18 @@ const toast = useToast();
 const products = reactive([]);
 const cartItems = reactive([]);
 const isRequestRunning = ref(false);
+const isVisibleForm = ref(false);
 
-const onAddProduct = event => {
-  if (event) {
-    products.unshift(event);
-  }
-  emit('setHiddenAddProductForm', true);
-};
+function addProduct(newProduct) {
+  products.unshift(newProduct);
+}
+
+function changeVisibleForm(value) {
+  isVisibleForm.value = value;
+}
+
+provide('products', { products, addProduct });
+provide('isVisibleForm', { isVisibleForm, changeVisibleForm });
 
 const showInfo = message => {
   toast.add({
@@ -38,24 +40,19 @@ const showInfo = message => {
   });
 };
 
-const onOrderFormSubmitted = () => {
-  showInfo('Form submitted successfully');
-};
-const onSetHiddenOrderForm = event => {
-  emit('setHiddenOrderForm', event);
-};
-
 const pageTitle = computed(() => {
   return isRequestRunning.value ? 'Data loading in progress ...' : 'Products';
 });
 
 const filteredProducts = computed(() => {
-  if (props.search) {
-    const priceSearch = Number(props.search);
+  const rawSearch = search.value;
+
+  if (rawSearch) {
+    const priceSearch = Number(rawSearch);
 
     return products.filter(
       o =>
-        o.title.includes(props.search) ||
+        o.title.includes(rawSearch) ||
         (!isNaN(priceSearch) && o.price === priceSearch)
     );
   } else {
@@ -84,6 +81,8 @@ const onAddToCart = productId => {
   }
 
   localStorage.setItem('cart', JSON.stringify(cartItems));
+
+  showInfo(`Product "${foundProduct.title}" added to Cart`);
 };
 
 onMounted(async () => {
@@ -106,25 +105,25 @@ onMounted(async () => {
 </script>
 
 <template>
-  <OrderForm
-    v-if="!props.hiddenOrderForm"
-    @setHiddenOrderForm="onSetHiddenOrderForm"
-    @orderFormSubmitted="onOrderFormSubmitted"
-  />
-  <ProductForm v-if="!props.hiddenAddProductForm" @add-product="onAddProduct" />
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
     <div class="text-900 font-bold text-6xl mb-4 text-center">
       {{ pageTitle }}
     </div>
-    <div
-      class="text-700 text-xl mb-6 text-center line-height-3"
-      v-if="!isRequestRunning"
-    >
-      Only today and only with us!
-    </div>
 
+    <Toolbar>
+      <template #start>
+        <Button
+          label="Create Product"
+          icon="pi pi-plus"
+          :disabled="isRequestRunning"
+          @click="changeVisibleForm(true)"
+        />
+      </template>
+    </Toolbar>
+
+    <ProductForm v-if="isVisibleForm" />
     <div class="grid">
-      <Spinner v-if="isRequestRunning" />
+      <Spinner v-if="isRequestRunning" class="my-4" />
       <template v-else>
         <Product
           v-for="product in filteredProducts"

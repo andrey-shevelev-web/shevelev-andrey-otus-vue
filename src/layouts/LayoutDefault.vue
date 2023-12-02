@@ -1,32 +1,20 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, provide } from 'vue';
 import MainHeader from '@/components/MainHeader.vue';
 import MainFooter from '@/components/MainFooter.vue';
 
 const mainSearch = ref('');
-const mainHiddenAddProductForm = ref(true);
-const mainHiddenOrderForm = ref(true);
 
 const onSetSearchValue = value => {
   mainSearch.value = value;
 };
 
-const onSetHiddenAddProductForm = event => {
-  mainHiddenAddProductForm.value = !!event;
-};
-
-const onSetHiddenOrderForm = event => {
-  mainHiddenOrderForm.value = !!event;
-};
+provide('search', mainSearch);
 </script>
 
 <template>
   <header>
-    <MainHeader
-      @setSearchValue="onSetSearchValue"
-      @setHiddenAddProductForm="onSetHiddenAddProductForm"
-      @setHiddenOrderForm="onSetHiddenOrderForm"
-    />
+    <MainHeader @setSearchValue="onSetSearchValue" />
   </header>
 
   <main>
@@ -36,4 +24,5 @@ const onSetHiddenOrderForm = event => {
   <footer>
     <MainFooter />
   </footer>
+  <Toast />
 </template>

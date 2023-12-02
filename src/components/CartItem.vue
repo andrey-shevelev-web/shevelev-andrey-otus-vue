@@ -27,16 +27,21 @@ const amount = computed(() => {
           />
         </div>
 
-        <div class="text-900 font-medium text-xl mb-3">
+        <div class="text-900 font-medium text-lg mb-2">
           {{ cartItem.title }}
         </div>
 
         <div class="flex align-items-center mb-3">
-          <span class="font-bold text-2xl text-900"
-            >${{ cartItem.price }} / ${{ amount }}</span
+          <span class="text-lg font-semibold"
+            >Price: ${{ cartItem.price }}</span
           >
         </div>
         <hr class="mb-3 mx-0 border-top-1 border-none surface-border mt-auto" />
+        <div class="flex align-items-center mb-3">
+          <span class="text-xl font-semibold text-primary"
+            >Amount: ${{ amount }}</span
+          >
+        </div>
 
         <div
           class="flex flex-wrap justify-content-between align-content-center"
@@ -44,20 +49,19 @@ const amount = computed(() => {
           <div class="flex justify-content-start align-content-center gap-3">
             <Button
               icon="pi pi-minus"
-              class="py-3 px-4"
+              class="py-2"
               @click="
                 $emit('changeQuantity', cartItem.productId, CART_DEC_QUANTITY)
               "
             ></Button>
             <div class="flex align-items-center">
-              <span
-                class="font-bold text-2xl text-900 inline-block text-primary"
-                >{{ cartItem.quantity }}</span
-              >
+              <span class="text-xl font-semibold text-primary">{{
+                cartItem.quantity
+              }}</span>
             </div>
             <Button
               icon="pi pi-plus"
-              class="py-3 px-4"
+              class="py-2"
               @click="
                 $emit('changeQuantity', cartItem.productId, CART_INC_QUANTITY)
               "
@@ -65,7 +69,7 @@ const amount = computed(() => {
           </div>
           <Button
             icon="pi pi-trash"
-            class="py-3 px-4"
+            class="py-2"
             severity="danger"
             @click="$emit('removeCartItem', cartItem.productId)"
           ></Button>

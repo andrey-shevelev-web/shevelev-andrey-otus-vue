@@ -39,8 +39,8 @@ defineProps({
         </div>
         <Button
           label="Add to Cart"
-          @click="$emit('addToCart', product.id)"
           class="p-3 w-full"
+          @click="$emit('addToCart', product.id)"
         ></Button>
       </div>
     </div>

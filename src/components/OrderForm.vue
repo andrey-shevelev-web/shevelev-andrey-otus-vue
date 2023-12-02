@@ -4,9 +4,11 @@ import InputMask from 'primevue/inputmask';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 import { useForm } from 'vee-validate';
+import { useRouter } from 'vue-router';
 import { postOrderForm } from '@/services/ProductService';
 
 const emit = defineEmits();
+const router = useRouter();
 
 const emptyValidation = fieldName => value => {
   return value ? true : `${fieldName} required`;
@@ -44,6 +46,10 @@ const [cardOwner, cardOwnerAttrs] = defineField('cardOwner');
 const [cardNumber, cardNumberAttrs] = defineField('cardNumber');
 const [agreeWithRules, agreeWithRulesAttrs] = defineField('agreeWithRules');
 
+const onRouteTo = name => {
+  router.push({ name });
+};
+
 const onSubmit = handleSubmit(async values => {
   const { firstname, surname, city, street, house, cardOwner, cardNumber } =
     values;
@@ -60,8 +66,8 @@ const onSubmit = handleSubmit(async values => {
 
   const response = await postOrderForm(formData);
   resetForm();
-  emit('orderFormSubmitted');
-  emit('setHiddenOrderForm', true);
+  localStorage.setItem('cart', JSON.stringify(''));
+  onRouteTo('ProductList');
 });
 </script>
 
@@ -218,11 +224,11 @@ const onSubmit = handleSubmit(async values => {
           class="flex flex-wrap justify-content-between align-content-center"
         >
           <Button
-            label="Cancel"
+            label="Return to Cart"
             icon="pi pi-times"
             class="w-5"
             severity="danger"
-            @click="$emit('setHiddenOrderForm', true)"
+            @click="onRouteTo('Cart')"
           ></Button>
           <Button
             label="Send order"

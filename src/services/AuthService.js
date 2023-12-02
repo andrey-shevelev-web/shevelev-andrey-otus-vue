@@ -11,6 +11,10 @@ function getToken() {
   return Cookies.get(TOKEN_PARAM_NAME);
 }
 
+export function getUsername() {
+  return localStorage.getItem('username');
+}
+
 function removeToken() {
   Cookies.remove(TOKEN_PARAM_NAME);
 }
@@ -20,6 +24,7 @@ export function authSignin(username, password) {
     accessToken = `Basic ${btoa(credentials)}`;
 
   setToken(accessToken);
+  localStorage.setItem('username', username);
 }
 
 export function isUserAuthenticated() {
@@ -28,4 +33,5 @@ export function isUserAuthenticated() {
 
 export function authSignout() {
   removeToken();
+  localStorage.removeItem('username');
 }

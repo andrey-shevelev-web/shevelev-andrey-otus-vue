@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
@@ -8,13 +8,16 @@ import Spinner from '@/components/Spinner.vue';
 
 const emit = defineEmits();
 
+const { products, addProduct } = inject('products');
+const { isVisibleForm, changeVisibleForm } = inject('isVisibleForm');
+
 const title = ref('');
 const category = ref('');
 const description = ref('');
 const price = ref('');
 
 const onAddProduct = () => {
-  emit('add-product', {
+  const newProduct = {
     id: uuidv4(),
     title: title.value,
     category: category.value,
@@ -26,11 +29,9 @@ const onAddProduct = () => {
       rate: 0,
       count: 0
     }
-  });
-};
-
-const onHideAddProductForm = () => {
-  emit('add-product', null);
+  };
+  addProduct(newProduct);
+  changeVisibleForm(false);
 };
 </script>
 
@@ -94,7 +95,7 @@ const onHideAddProductForm = () => {
             icon="pi pi-times"
             class="w-5"
             severity="danger"
-            @click="onHideAddProductForm"
+            @click="changeVisibleForm(false)"
           ></Button>
           <Button
             label="Add product"

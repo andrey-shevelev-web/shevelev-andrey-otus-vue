@@ -1,24 +1,51 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import Toolbar from 'primevue/toolbar';
+import Tag from 'primevue/tag';
 import Button from 'primevue/button';
 import Spinner from '@/components/Spinner.vue';
+import { useRouter } from 'vue-router';
 import CartItem from '@/components/CartItem.vue';
 import { CART_DEC_QUANTITY } from '@/constants';
 
 const props = defineProps([]);
 const emit = defineEmits();
+const router = useRouter();
 
 const pageTitle = ref('Your cart');
 const cartItems = reactive([]);
 const isRequestRunning = ref(false);
+
+const cartTotalAmount = computed(() => {
+  const total = cartItems.reduce((acc, o) => {
+    return acc + o.price * o.quantity;
+  }, 0);
+
+  return `Total Amount: $${total.toFixed(2)}`;
+});
+
+const cartTotalQuantityRaw = computed(() => {
+  const total = cartItems.reduce((acc, o) => {
+    return acc + o.quantity;
+  }, 0);
+
+  return total;
+});
+
+const cartTotalQuantity = computed(() => {
+  const total = cartItems.reduce((acc, o) => {
+    return acc + o.quantity;
+  }, 0);
+
+  return `Total Products: ${total}`;
+});
 
 const onChangeQuantity = (productId, action) => {
   const foundCartItem = cartItems.find(o => o.productId == productId);
   if (foundCartItem) {
     switch (action) {
       case CART_DEC_QUANTITY:
-        if (foundCartItem.quantity > 0) foundCartItem.quantity -= 1;
+        if (foundCartItem.quantity > 1) foundCartItem.quantity -= 1;
         break;
       default:
         foundCartItem.quantity += 1;
@@ -39,6 +66,10 @@ const onClearCart = () => {
   localStorage.setItem('cart', JSON.stringify(cartItems));
 };
 
+const onCheckout = () => {
+  router.push({ name: 'OrderForm' });
+};
+
 onMounted(async () => {
   const cartFromLS = JSON.parse(localStorage.getItem('cart'));
   cartItems.push(...cartFromLS);
@@ -50,13 +81,33 @@ onMounted(async () => {
     <div class="text-900 font-bold text-6xl mb-4 text-center">
       {{ pageTitle }}
     </div>
+
     <Toolbar>
       <template #start>
+        <Tag
+          :value="cartTotalAmount"
+          severity="success"
+          class="font-semibold text-lg mr-2"
+        ></Tag>
+        <Tag
+          :value="cartTotalQuantity"
+          severity="success"
+          class="font-semibold text-lg mr-4"
+        ></Tag>
+        <Button
+          label="Сheckout"
+          icon="pi pi-check-square"
+          :disabled="!cartTotalQuantityRaw"
+          @click="onCheckout"
+        />
+      </template>
+
+      <template #end>
         <Button
           label="Clear Cart"
           icon="pi pi-trash"
-          class="mr-2"
           severity="danger"
+          :disabled="!cartTotalQuantityRaw"
           @click="onClearCart"
         />
       </template>
