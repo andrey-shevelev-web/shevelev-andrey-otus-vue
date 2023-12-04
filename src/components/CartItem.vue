@@ -1,14 +1,10 @@
 <script setup>
-import { computed } from 'vue';
 import Button from 'primevue/button';
 import { CART_INC_QUANTITY, CART_DEC_QUANTITY } from '@/constants';
+import { useCartStore } from '@/stores/CartStore';
 
+const cartStore = useCartStore();
 const props = defineProps(['cartItem']);
-
-const amount = computed(() => {
-  const { price, quantity } = props.cartItem;
-  return (price * quantity).toFixed(2);
-});
 </script>
 
 <template>
@@ -39,7 +35,9 @@ const amount = computed(() => {
         <hr class="mb-3 mx-0 border-top-1 border-none surface-border mt-auto" />
         <div class="flex align-items-center mb-3">
           <span class="text-xl font-semibold text-primary"
-            >Amount: ${{ amount }}</span
+            >Amount: ${{
+              cartStore.getCartItemAmount(cartItem.productId)
+            }}</span
           >
         </div>
 
@@ -51,7 +49,10 @@ const amount = computed(() => {
               icon="pi pi-minus"
               class="py-2"
               @click="
-                $emit('changeQuantity', cartItem.productId, CART_DEC_QUANTITY)
+                cartStore.changeCartItemQuantity(
+                  cartItem.productId,
+                  CART_DEC_QUANTITY
+                )
               "
             ></Button>
             <div class="flex align-items-center">
@@ -63,7 +64,10 @@ const amount = computed(() => {
               icon="pi pi-plus"
               class="py-2"
               @click="
-                $emit('changeQuantity', cartItem.productId, CART_INC_QUANTITY)
+                cartStore.changeCartItemQuantity(
+                  cartItem.productId,
+                  CART_INC_QUANTITY
+                )
               "
             ></Button>
           </div>
@@ -71,7 +75,7 @@ const amount = computed(() => {
             icon="pi pi-trash"
             class="py-2"
             severity="danger"
-            @click="$emit('removeCartItem', cartItem.productId)"
+            @click="cartStore.removeCartItem(cartItem.productId)"
           ></Button>
         </div>
       </div>

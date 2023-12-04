@@ -3,9 +3,11 @@ import Search from '@/components/Search.vue';
 import { getUsername, authSignout } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
 import { useProductStore } from '@/stores/ProductStore';
+import { useCartStore } from '@/stores/CartStore';
 
 const router = useRouter();
 const productStore = useProductStore();
+const cartStore = useCartStore();
 
 const onSignout = () => {
   authSignout();
@@ -34,7 +36,7 @@ const onSignout = () => {
           class="mr-4 no-underline text-white transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"
         >
           <i class="pi pi-fw pi-cart-plus mr-2" />
-          <span>Cart</span>
+          <span>Cart [{{ cartStore.cartTotalQuantity }}]</span>
         </router-link>
         <div
           class="text-center mr-4 transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"

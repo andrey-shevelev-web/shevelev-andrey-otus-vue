@@ -1,9 +1,28 @@
 <script setup>
 import Button from 'primevue/button';
+import { useCartStore } from '@/stores/CartStore';
+import { useToast } from 'primevue/usetoast';
+
+const cartStore = useCartStore();
+const toast = useToast();
 
 defineProps({
   product: Object
 });
+
+const showInfo = message => {
+  toast.add({
+    severity: 'success',
+    summary: 'Success',
+    detail: message,
+    life: 3000
+  });
+};
+
+const onAddProductToCart = (productId, productTitle) => {
+  cartStore.addProductToCart(productId);
+  showInfo(`Product "${productTitle}" added to cart`);
+};
 </script>
 
 <template>
@@ -40,7 +59,7 @@ defineProps({
         <Button
           label="Add to Cart"
           class="p-3 w-full"
-          @click="$emit('addToCart', product.id)"
+          @click="onAddProductToCart(product.id, product.title)"
         ></Button>
       </div>
     </div>

@@ -6,9 +6,10 @@ import Button from 'primevue/button';
 import { useForm } from 'vee-validate';
 import { useRouter } from 'vue-router';
 import { postOrderForm } from '@/services/ProductService';
+import { useCartStore } from '@/stores/CartStore';
 
-const emit = defineEmits();
 const router = useRouter();
+const cartStore = useCartStore();
 
 const emptyValidation = fieldName => value => {
   return value ? true : `${fieldName} required`;
@@ -66,7 +67,7 @@ const onSubmit = handleSubmit(async values => {
 
   const response = await postOrderForm(formData);
   resetForm();
-  localStorage.setItem('cart', JSON.stringify(''));
+  cartStore.clearCart();
   onRouteTo('ProductList');
 });
 </script>
