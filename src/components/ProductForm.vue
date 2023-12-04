@@ -1,37 +1,25 @@
 <script setup>
-import { ref, inject } from 'vue';
-import { v4 as uuidv4 } from 'uuid';
+import { ref } from 'vue';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Spinner from '@/components/Spinner.vue';
+import { useProductStore } from '@/stores/ProductStore';
 
-const emit = defineEmits();
-
-const { products, addProduct } = inject('products');
-const { isVisibleForm, changeVisibleForm } = inject('isVisibleForm');
+const productStore = useProductStore();
 
 const title = ref('');
 const category = ref('');
 const description = ref('');
 const price = ref('');
 
-const onAddProduct = () => {
-  const newProduct = {
-    id: uuidv4(),
-    title: title.value,
-    category: category.value,
-    description: description.value,
-    price: price.value,
-    image:
-      'https://mir-baget.com/upload/iblock/b9b/nibxd6dvjqm4yv24tzzsvvv6y7w1rhzd.png',
-    rating: {
-      rate: 0,
-      count: 0
-    }
-  };
-  addProduct(newProduct);
-  changeVisibleForm(false);
+const onCreateProduct = () => {
+  productStore.createProduct(
+    title.value,
+    category.value,
+    description.value,
+    price.value
+  );
 };
 </script>
 
@@ -40,7 +28,7 @@ const onAddProduct = () => {
     class="px-4 py-8 md:px-6 lg:px-8 flex align-items-center justify-content-center"
   >
     <div class="surface-card p-4 shadow-2 border-round w-full lg:w-4">
-      <div @keyup.enter="onAddProduct">
+      <div @keyup.enter="onCreateProduct">
         <label for="title1" class="block text-900 font-medium mb-2"
           >Title</label
         >
@@ -95,13 +83,13 @@ const onAddProduct = () => {
             icon="pi pi-times"
             class="w-5"
             severity="danger"
-            @click="changeVisibleForm(false)"
+            @click="productStore.setVisibleCreateForm(false)"
           ></Button>
           <Button
             label="Add product"
             icon="pi pi-plus"
             class="w-5"
-            @click="onAddProduct"
+            @click="onCreateProduct"
           ></Button>
         </div>
       </div>

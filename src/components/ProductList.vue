@@ -7,29 +7,29 @@ import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
-import { v4 as uuidv4 } from 'uuid';
-import { getProducts } from '@/services/ProductService';
+import { useProductStore } from '@/stores/ProductStore';
 
-const search = inject('search');
+const productStore = useProductStore();
 const emit = defineEmits();
+// const search = inject('search');
 
 const toast = useToast();
 
-const products = reactive([]);
-const cartItems = reactive([]);
-const isRequestRunning = ref(false);
-const isVisibleForm = ref(false);
+// const products = reactive([]);
+// const cartItems = reactive([]);
+// const isRequestRunning = ref(false);
+// const isVisibleForm = ref(false);
 
-function addProduct(newProduct) {
-  products.unshift(newProduct);
-}
+// function addProduct(newProduct) {
+//   products.unshift(newProduct);
+// }
 
-function changeVisibleForm(value) {
-  isVisibleForm.value = value;
-}
+// function changeVisibleForm(value) {
+//   isVisibleForm.value = value;
+// }
 
-provide('products', { products, addProduct });
-provide('isVisibleForm', { isVisibleForm, changeVisibleForm });
+// provide('products', { products, addProduct });
+// provide('isVisibleForm', { isVisibleForm, changeVisibleForm });
 
 const showInfo = message => {
   toast.add({
@@ -41,66 +41,69 @@ const showInfo = message => {
 };
 
 const pageTitle = computed(() => {
-  return isRequestRunning.value ? 'Data loading in progress ...' : 'Products';
+  return productStore.isRequestRunning.value
+    ? 'Data loading in progress ...'
+    : 'Products';
 });
 
-const filteredProducts = computed(() => {
-  const rawSearch = search.value;
+// const filteredProducts = computed(() => {
+//   const rawSearch = search.value;
 
-  if (rawSearch) {
-    const priceSearch = Number(rawSearch);
+//   if (rawSearch) {
+//     const priceSearch = Number(rawSearch);
 
-    return products.filter(
-      o =>
-        o.title.includes(rawSearch) ||
-        (!isNaN(priceSearch) && o.price === priceSearch)
-    );
-  } else {
-    return products;
-  }
-});
+//     return products.filter(
+//       o =>
+//         o.title.includes(rawSearch) ||
+//         (!isNaN(priceSearch) && o.price === priceSearch)
+//     );
+//   } else {
+//     return products;
+//   }
+// });
 
-const onAddToCart = productId => {
-  const foundProduct = products.find(o => o.id == productId);
-  if (!foundProduct) return;
+// const onAddToCart = productId => {
+//   const foundProduct = products.find(o => o.id == productId);
+//   if (!foundProduct) return;
 
-  const newCartItem = {
-    id: uuidv4(),
-    productId,
-    image: foundProduct.image,
-    title: foundProduct.title,
-    price: foundProduct.price,
-    quantity: 1
-  };
+//   const newCartItem = {
+//     id: uuidv4(),
+//     productId,
+//     image: foundProduct.image,
+//     title: foundProduct.title,
+//     price: foundProduct.price,
+//     quantity: 1
+//   };
 
-  const foundCartItem = cartItems.find(o => o.productId == productId);
-  if (foundCartItem) {
-    foundCartItem.quantity += 1;
-  } else {
-    cartItems.push(newCartItem);
-  }
+//   const foundCartItem = cartItems.find(o => o.productId == productId);
+//   if (foundCartItem) {
+//     foundCartItem.quantity += 1;
+//   } else {
+//     cartItems.push(newCartItem);
+//   }
 
-  localStorage.setItem('cart', JSON.stringify(cartItems));
+//   localStorage.setItem('cart', JSON.stringify(cartItems));
 
-  showInfo(`Product "${foundProduct.title}" added to Cart`);
-};
+//   showInfo(`Product "${foundProduct.title}" added to Cart`);
+// };
 
 onMounted(async () => {
-  isRequestRunning.value = true;
+  // isRequestRunning.value = true;
 
-  const cartFromLS = JSON.parse(localStorage.getItem('cart'));
-  if (cartFromLS) {
-    cartItems.push(...cartFromLS);
-  }
+  // const cartFromLS = JSON.parse(localStorage.getItem('cart'));
+  // if (cartFromLS) {
+  //   cartItems.push(...cartFromLS);
+  // }
 
-  try {
-    const response = await getProducts();
-    products.push(...response);
-  } catch (error) {
-    console.log('Error! Data loading error', error);
-  } finally {
-    isRequestRunning.value = false;
-  }
+  // try {
+  //   const response = await getProducts();
+  //   products.push(...response);
+  // } catch (error) {
+  //   console.log('Error! Data loading error', error);
+  // } finally {
+  //   isRequestRunning.value = false;
+  // }
+  await productStore.loadProducts();
 });
 </script>
 
@@ -115,21 +118,20 @@ onMounted(async () => {
         <Button
           label="Create Product"
           icon="pi pi-plus"
-          :disabled="isRequestRunning"
-          @click="changeVisibleForm(true)"
+          :disabled="productStore.isRequestRunning"
+          @click="productStore.setVisibleCreateForm(true)"
         />
       </template>
     </Toolbar>
 
-    <ProductForm v-if="isVisibleForm" />
+    <ProductForm v-if="productStore.isVisibleCreateForm" />
     <div class="grid">
-      <Spinner v-if="isRequestRunning" class="my-4" />
+      <Spinner v-if="productStore.isRequestRunning" class="my-4" />
       <template v-else>
         <Product
-          v-for="product in filteredProducts"
+          v-for="product in productStore.filteredProducts"
           :key="product.id"
           :product="product"
-          @addToCart="onAddToCart"
         />
       </template>
     </div>

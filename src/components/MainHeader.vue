@@ -1,17 +1,11 @@
 <script setup>
-import { ref, watch } from 'vue';
 import Search from '@/components/Search.vue';
 import { getUsername, authSignout } from '@/services/AuthService';
 import { useRouter } from 'vue-router';
+import { useProductStore } from '@/stores/ProductStore';
 
 const router = useRouter();
-
-const emit = defineEmits();
-const search = ref('');
-
-watch(search, (newSearchValue, oldSearchValue) => {
-  emit('setSearchValue', newSearchValue);
-});
+const productStore = useProductStore();
 
 const onSignout = () => {
   authSignout();
@@ -34,7 +28,7 @@ const onSignout = () => {
           <i class="pi pi-fw pi-home mr-2" />
           <span>Products</span>
         </router-link>
-        <Search v-model="search" class="mr-4" />
+        <Search v-model="productStore.productsFilter" class="mr-4" />
         <router-link
           :to="{ name: 'Cart' }"
           class="mr-4 no-underline text-white transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"
