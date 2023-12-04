@@ -29,7 +29,6 @@ export const useProductStore = defineStore('productStore', () => {
   };
 
   const setProductsFilter = value => {
-    console.log('store value', value);
     productsFilter.value = value;
   };
 
