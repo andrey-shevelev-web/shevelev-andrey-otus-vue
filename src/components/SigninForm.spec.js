@@ -9,6 +9,7 @@ describe('SigninForm', () => {
     expect(wrapper.html()).toMatchSnapshot()
   })
   it('shows error when login is not valid', async () => {
+    vi.useFakeTimers()
     const wrapper = mount(component)
     const form = wrapper.find('form')
     const login = wrapper.find('#email1')
@@ -16,10 +17,11 @@ describe('SigninForm', () => {
     const button = wrapper.find('[type="submit"]')
     await login.setValue('none@novhere.com')
     await login.trigger('change')
-    await login.trigger('keyup', {key: 'enter'})
-    await button.trigger('click')
+    await form.trigger('commit')
+
     vi.runAllTimers()
     expect(wrapper.html()).toMatchSnapshot()
+    vi.useRealTimers()
   })
 
 })
