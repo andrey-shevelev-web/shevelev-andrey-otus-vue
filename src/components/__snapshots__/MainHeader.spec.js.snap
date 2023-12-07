@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MainHeader > mounts without error 1`] = `
+"<div class="mb-2 p-2 bg-primary text-white">
+  <div class="flex align-items-center justify-content-between flex-wrap px-3">
+    <div class="flex align-items-center">
+      <div class="text-2xl font-medium text-white">DEMO SHOP</div>
+    </div>
+    <div class="flex align-items-center">
+      <router-link-stub to="[object Object]" class="mr-4 no-underline text-white transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"></router-link-stub><input class="p-inputtext p-component p-inputtext-sm mr-4" data-pc-name="inputtext" data-pc-section="root" placeholder="Search by name or price">
+      <router-link-stub to="[object Object]" class="mr-4 no-underline text-white transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"></router-link-stub>
+      <div class="text-center mr-4 transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"><i class="pi pi-fw pi-user mr-2"></i><span></span></div>
+      <router-link-stub to="{ name: 'Signin' }" class="no-underline text-white transition-colors transition-ease-in transition-duration-300 hover:text-yellow-300"></router-link-stub>
+    </div>
+  </div>
+</div>"
+`;
