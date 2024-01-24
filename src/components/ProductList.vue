@@ -30,6 +30,7 @@ onMounted(async () => {
     <Toolbar>
       <template #start>
         <Button
+          data-testid="add-to-cart"
           label="Create Product"
           icon="pi pi-plus"
           :disabled="productStore.isRequestRunning"
